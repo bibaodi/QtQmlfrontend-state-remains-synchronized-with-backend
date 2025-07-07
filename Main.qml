@@ -58,6 +58,23 @@ Window {
                 anchors.fill: parent
             }
         }
+        Button {
+            id: id_userOnetimeButton
+            text: "Start id_userOnetimeButton Work"
+            onClicked: {
+                console.log("id_userOnetimeButton clicked...")
+                id_userOnetimeButton.text = "id_userOnetimeButton Working..."
+                id_userOnetimeButton.enabled = false
+                id_busyIndicator4id_userOnetimeButton.running = true
+                id_worker.doWorkWithNewThread()
+            }
+            BusyIndicator {
+                //Note: The indicator is only visible when running property is set to true.
+                id: id_busyIndicator4id_userOnetimeButton
+                running: false //The default value is true
+                anchors.fill: parent
+            }
+        }
     }
     Connections {
         target: id_worker
@@ -76,6 +93,21 @@ Window {
             } else {
                 id_userButton.text = "Task Failed"
                 console.log("Work failed")
+            }
+        }
+    }
+    //this make id_userOnetimeButton and id_userButton both connect to id_worker's signal. --eton@250707
+    Connections {
+        target: id_worker
+        function onWorkFinished(success) {
+            id_busyIndicator4id_userOnetimeButton.running = false
+            id_userOnetimeButton.enabled = true
+            if (success) {
+                console.log("id_userOnetimeButton Work finished successfully")
+                id_userOnetimeButton.text = "Task Completed"
+            } else {
+                id_userOnetimeButton.text = "Task Failed"
+                console.log("id_userOnetimeButton Work failed")
             }
         }
     }
