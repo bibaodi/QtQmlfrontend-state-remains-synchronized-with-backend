@@ -11,6 +11,20 @@
 
 #include "worker.h"
 
+#include <filesystem>
+#include <string>
+#include <unistd.h>
+
+void printThreads() {
+  // Linux-specific code
+  std::string procDir = "/proc/" + std::to_string(getpid()) + "/task";
+  qDebug() << "procDir=" << procDir;
+  int thCnt = 0;
+  for (const auto &entry : std::filesystem::directory_iterator(procDir)) {
+    qDebug() << thCnt++ << "]Thread ID:" << entry.path().filename().c_str();
+  }
+}
+
 int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
 
@@ -29,6 +43,8 @@ int main(int argc, char *argv[]) {
   if (engine.rootObjects().isEmpty()) {
     return -1;
   }
+
+  printThreads();
 
   return app.exec();
 }

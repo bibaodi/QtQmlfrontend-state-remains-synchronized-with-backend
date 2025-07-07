@@ -38,7 +38,9 @@ int Worker::prepareThread() {
 
 void Worker::doWorkSync() {
   static int workid = 0;
-  qDebug() << "task id=" << workid++;
+  qDebug() << "doWorkSync task id=" << workid++;
+  qDebug() << "I will block Application window!!!"; // maybe the rendering cannot be invoked from main thead which is busy woring.--eton@50707
+                                                    // --https://doc.qt.io/qt-6/qtquick-visualcanvas-scenegraph.html
   QMutexLocker locker(&mutex);
   if (isRunning) {
     qDebug() << "Previous task is still running.(without mutex also work--eton@250707)";

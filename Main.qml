@@ -75,6 +75,16 @@ Window {
                 anchors.fill: parent
             }
         }
+        Button {
+            id: id_syncButton
+            text: "Start id_syncButton Work"
+            onClicked: {
+                console.log("id_syncButton clicked...")
+                id_userOnetimeButton.text = "id_syncButton Working..."
+                id_userOnetimeButton.enabled = false
+                id_worker.doWorkSync()
+            }
+        }
     }
     Connections {
         target: id_worker
